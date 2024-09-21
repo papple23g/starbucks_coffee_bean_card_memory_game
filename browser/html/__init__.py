@@ -1,6 +1,4 @@
-
 from browser import _mockbrython
-
 
 """ HTML4 tags """
 
@@ -50,7 +48,7 @@ HTML = _mockbrython
 I = _mockbrython
 IFRAME = _mockbrython
 IMG = _mockbrython
-INPUT = _mockbrython
+# INPUT = _mockbrython
 INS = _mockbrython
 ISINDEX = _mockbrython
 KBD = _mockbrython
@@ -100,7 +98,7 @@ VAR = _mockbrython
 """ HTML5 tags """
 ARTICLE = _mockbrython
 ASIDE = _mockbrython
-AUDIO = _mockbrython
+# AUDIO = _mockbrython
 BDI = _mockbrython
 CANVAS = _mockbrython
 COMMAND = _mockbrython
@@ -155,3 +153,30 @@ class _EV(_mockbrython):
 
     def __init__(self, id):
         self.currentTarget = _mockbrython(id=id)
+
+
+class INPUT(_mockbrython):
+    @property
+    def max(self) -> float:
+        pass
+
+    @property
+    def min(self) -> float:
+        pass
+
+    @property
+    def step(self) -> float:
+        pass
+
+    @property
+    def type(self) -> str:
+        pass
+
+
+class AUDIO(_mockbrython):
+    @property
+    def volume(self) -> float:
+        pass
+
+    def play(self) -> None:
+        pass
