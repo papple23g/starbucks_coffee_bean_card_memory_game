@@ -1,14 +1,69 @@
 import random
+from dataclasses import dataclass
 from enum import IntEnum
+from typing import cast
 
 from browser import aio, doc
 from browser.html import DIV
 
 random.seed(0)
 
+
+@dataclass
+class Bean:
+    """ 豆子 """
+    name: str
+    """名稱"""
+    baking: str
+    """烘培程度: 星巴克黃金烘焙、中度烘焙、深度烘焙"""
+    origin: list[str]
+    """產地"""
+    acidity: str
+    """酸度: 低、中、高"""
+    alcoholity: str
+    """醇度: 低、中、高"""
+
+    @property
+    def name_and_origin_str(self) -> str:
+        """ 名稱和產區
+        """
+        return f"{self.name}\n產區: {'/'.join(self.origin)}"
+
+    @property
+    def recipes_str(self) -> str:
+        """ 配方
+        """
+        return f"{self.baking}\n酸度: {self.acidity}\n醇度: {self.alcoholity}"
+
+
+BEAN_LIST = [
+    Bean(
+        name="輕柳綜合咖啡豆",
+        baking="星巴克黃金烘焙",
+        origin=["拉丁美洲", "非洲"],
+        acidity="高",
+        alcoholity="低",
+    ),
+    Bean(
+        name="派克市場烘培咖啡豆",
+        baking="中度烘焙",
+        origin=["拉丁美洲"],
+        acidity="中",
+        alcoholity="中",
+    ),
+    Bean(
+        name="佛羅娜綜合咖啡豆",
+        baking="深度烘焙",
+        origin=["綜合產區"],
+        acidity="低",
+        alcoholity="高",
+    ),
+]
+
+bean = BEAN_LIST[0]
 card_text_pair_dict = {
     "A": "a",
-    "B": "b",
+    bean.name_and_origin_str: bean.recipes_str,
     "C": "c",
     "D": "d",
     "E": "e",
@@ -32,7 +87,7 @@ class CardStatus(IntEnum):
 class CardDiv(DIV):
 
     # 基本樣式: 36x36、圓角、文字置中
-    base_class_str = "w-36 h-36 rounded-lg flex items-center justify-center "
+    base_class_str = "w-36 h-36 rounded-lg flex items-center justify-center text-center "
     status_to_class_str_dict = {
         # 未翻面樣式: 藍色背景, 滑鼠指標
         CardStatus.UNFLIPPED: base_class_str+"bg-blue-500 cursor-pointer",
@@ -59,7 +114,7 @@ class CardDiv(DIV):
     def to_flipped(self) -> None:
         self.status = CardStatus.FLIPPED
         self.classList = self.status_to_class_str_dict[self.status]
-        self.text = self._text
+        self.innerHTML = self._text.replace("\n", "<br>")
 
     def to_unflipped(self) -> None:
         self.status = CardStatus.UNFLIPPED
@@ -98,7 +153,7 @@ class Table:
     async def on_click(self) -> None:
         flipped_card_div_list: list[CardDiv] = [
             card_div
-            for card_div in self.div.children
+            for card_div in cast(list[CardDiv], self.div.children)
             if card_div.status == CardStatus.FLIPPED
         ]
         if len(flipped_card_div_list) != 2:
