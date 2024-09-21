@@ -119,6 +119,10 @@ class _mockbrython(dict):
     def classList(self) -> ClassList:
         pass
 
+    @property
+    def children(self) -> list['_mockbrython']:
+        pass
+
 
 document = _mockbrython()
 doc = _mockbrython()
