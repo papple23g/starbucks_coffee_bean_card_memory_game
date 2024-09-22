@@ -22,18 +22,28 @@ class Bean:
     """酸度: 低、中、高"""
     alcoholity: str
     """醇度: 低、中、高"""
+    img_url: str
+    """圖片網址"""
 
     @property
-    def name_and_origin_str(self) -> str:
+    def info_html(self) -> str:
         """ 名稱和產區
         """
-        return f"{self.name}\n產區: {'/'.join(self.origin)}"
+        return "<br>".join([
+            self.name,
+            f"({'/'.join(self.origin)})",
+            f'<img src={self.img_url} alt={self.name} class="w-20 h-20 rounded-lg" />']
+        )
 
     @property
-    def recipes_str(self) -> str:
+    def recipes_html(self) -> str:
         """ 配方
         """
-        return f"{self.baking}\n酸度: {self.acidity}\n醇度: {self.alcoholity}"
+        return "<br>".join([
+            self.baking,
+            f"酸度: {self.acidity}",
+            f"醇度: {self.alcoholity}"
+        ])
 
 
 BEAN_LIST = [
@@ -43,6 +53,7 @@ BEAN_LIST = [
         origin=["拉丁美洲", "非洲"],
         acidity="高",
         alcoholity="低",
+        img_url="https://i.imgur.com/1Ve9Ext.png",
     ),
     Bean(
         name="派克市場烘培咖啡豆",
@@ -50,6 +61,7 @@ BEAN_LIST = [
         origin=["拉丁美洲"],
         acidity="中",
         alcoholity="中",
+        img_url="https://i.imgur.com/mD14Rf4.png",
     ),
     Bean(
         name="佛羅娜綜合咖啡豆",
@@ -57,6 +69,7 @@ BEAN_LIST = [
         origin=["綜合產區"],
         acidity="低",
         alcoholity="高",
+        img_url="https://i.imgur.com/42vwBmG.png",
     ),
     Bean(
         name="閑庭綜合咖啡豆",
@@ -64,6 +77,7 @@ BEAN_LIST = [
         origin=["拉丁美洲"],
         acidity="中",
         alcoholity="低",
+        img_url="https://i.imgur.com/IabYIRs.png",
     ),
     Bean(
         name="家常綜合咖啡豆",
@@ -71,6 +85,7 @@ BEAN_LIST = [
         origin=["拉丁美洲"],
         acidity="中",
         alcoholity="中",
+        img_url="https://i.imgur.com/qgWmOjv.png",
     ),
     Bean(
         name="濃縮烘培咖啡豆",
@@ -78,6 +93,7 @@ BEAN_LIST = [
         origin=["拉丁美洲", "非洲", "亞洲太平洋"],
         acidity="中",
         alcoholity="高",
+        img_url="https://i.imgur.com/8q6Y6hQ.png",
     ),
     Bean(
         name="單一產區蘇門答臘",
@@ -85,6 +101,7 @@ BEAN_LIST = [
         origin=["亞洲太平洋: 蘇門答臘·印尼"],
         acidity="低",
         alcoholity="高",
+        img_url="https://i.imgur.com/ojGyF8z.png",
     ),
     Bean(
         name="單一產區瓜地馬拉安提瓜",
@@ -92,6 +109,7 @@ BEAN_LIST = [
         origin=["拉丁美洲: 瓜地馬拉安提瓜地區"],
         acidity="中",
         alcoholity="中",
+        img_url="https://i.imgur.com/P5YGIi7.png",
     ),
     Bean(
         name="單一產區肯亞",
@@ -99,6 +117,7 @@ BEAN_LIST = [
         origin=["非洲: 肯亞"],
         acidity="高",
         alcoholity="中",
+        img_url="https://i.imgur.com/meYNanR.png",
     ),
     Bean(
         name="單一產區哥倫比亞",
@@ -106,21 +125,18 @@ BEAN_LIST = [
         origin=["拉丁美洲: 哥倫比亞"],
         acidity="中",
         alcoholity="中",
+        img_url="https://i.imgur.com/hV3tRmO.png",
     ),
-
 ]
 
-# bean = BEAN_LIST[0]
+# 預先加載圖片，避免卡牌翻面時圖片閃爍
+for bean in BEAN_LIST:
+    img = doc.createElement("img")
+    img.src = bean.img_url
+
+
 card_text_pair_dict = {
-    # "A": "a",
-    # bean.name_and_origin_str: bean.recipes_str,
-    # "C": "c",
-    # "D": "d",
-    # "E": "e",
-    # "F": "f",
-    # "G": "g",
-    # "H": "h",
-    bean.name_and_origin_str: bean.recipes_str
+    bean.info_html: bean.recipes_html
     for bean in BEAN_LIST
 }
 
@@ -166,7 +182,7 @@ class CardDiv(DIV):
     def to_flipped(self) -> None:
         self.status = CardStatus.FLIPPED
         self.classList = self.status_to_class_str_dict[self.status]
-        self.innerHTML = self._text.replace("\n", "<br>")
+        self.innerHTML = self._text
 
     def to_unflipped(self) -> None:
         self.status = CardStatus.UNFLIPPED
