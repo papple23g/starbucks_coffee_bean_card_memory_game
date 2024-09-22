@@ -41,7 +41,7 @@ class Bean:
             '<div style="position: relative;">'
             + "<br>".join([
                 # 風味1
-                f'<span style="font-size: 20px;">{self.flavor1}</span>',
+                f'<span style="font-size: 24px;"><u>{self.flavor1}</u></span>',
                 # 名稱
                 f'<span class="text-md">({self.name})</span>',
                 # 產區
@@ -61,7 +61,7 @@ class Bean:
             '<div style="position: relative;">'
             + "<br>".join([
                 # 風味2
-                f'<span style="font-size: 20px;">{self.flavor2}</span>',
+                f'<span style="font-size: 24px;"><u>{self.flavor2}</u></span>',
                 # 名稱
                 f'<span class="text-md">({self.name})</span>',
                 # 烘培程度
