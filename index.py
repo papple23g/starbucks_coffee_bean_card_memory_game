@@ -15,7 +15,7 @@ class Bean:
     name: str
     """名稱"""
     baking: str
-    """烘培程度: 星巴克黃金烘焙、中度烘焙、深度烘焙"""
+    """烘培程度: 黃金烘焙、中度烘焙、深度烘焙"""
     origin: list[str]
     """產地"""
     acidity: str
@@ -24,39 +24,72 @@ class Bean:
     """醇度: 低、中、高"""
     img_url: str
     """圖片網址"""
+    flavor1: str
+    """風味1"""
+    flavor2: str
+    """風味2"""
 
     @property
-    def info_html(self) -> str:
-        """ 名稱和產區
+    def img_html(self) -> str:
+        return f'<img src="{self.img_url}" alt="{self.name}" style="width: 30px; height: auto; border-radius: 8px; position: absolute; top: 80px;" />'
+
+    @property
+    def card1_innerhtml(self) -> str:
+        """ 卡片1 的內容
         """
-        return "<br>".join([
-            self.name,
-            f"({'/'.join(self.origin)})",
-            f'<img src={self.img_url} alt={self.name} class="w-20 h-20 rounded-lg" />']
+        return (
+            '<div style="position: relative;">'
+            + "<br>".join([
+                # 風味1
+                f'<span style="font-size: 20px;">{self.flavor1}</span>',
+                # 名稱
+                f'<span class="text-md">({self.name})</span>',
+                # 產區
+                f'<span class="text-sm">{" / ".join(self.origin)}</span>',
+                # 酸度
+                f'<span class="text-sm">酸度: {self.acidity}</span>',
+            ])
+            + self.img_html
+            + '</div>'
         )
 
     @property
-    def recipes_html(self) -> str:
-        """ 配方
+    def card2_innerhtml(self) -> str:
+        """ 卡片2 的內容
         """
-        return "<br>".join([
-            self.baking,
-            f"酸度: {self.acidity}",
-            f"醇度: {self.alcoholity}"
-        ])
+        return (
+            '<div style="position: relative;">'
+            + "<br>".join([
+                # 風味2
+                f'<span style="font-size: 20px;">{self.flavor2}</span>',
+                # 名稱
+                f'<span class="text-md">({self.name})</span>',
+                # 烘培程度
+                f'<span class="text-sm">{self.baking}</span>',
+                # 醇度
+                f'<span class="text-sm">醇度: {self.alcoholity}</span>',
+            ])
+            # 圖片 (左下角，佔據卡片約1/6)
+            + self.img_html
+            + '</div>'
+        )
 
 
 BEAN_LIST = [
     Bean(
-        name="輕柳綜合咖啡豆",
-        baking="星巴克黃金烘焙",
+        name="輕柳綜合",
+        flavor1="焦糖",
+        flavor2="檸檬皮",
+        baking="黃金烘焙",
         origin=["拉丁美洲", "非洲"],
         acidity="高",
         alcoholity="低",
         img_url="https://i.imgur.com/1Ve9Ext.png",
     ),
     Bean(
-        name="派克市場烘培咖啡豆",
+        name="派克市場",
+        flavor1="可可",
+        flavor2="夾心巧克力",
         baking="中度烘焙",
         origin=["拉丁美洲"],
         acidity="中",
@@ -64,7 +97,9 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/mD14Rf4.png",
     ),
     Bean(
-        name="佛羅娜綜合咖啡豆",
+        name="佛羅娜",
+        flavor1="黑可可",
+        flavor2="焦糖",
         baking="深度烘焙",
         origin=["綜合產區"],
         acidity="低",
@@ -72,15 +107,19 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/42vwBmG.png",
     ),
     Bean(
-        name="閑庭綜合咖啡豆",
-        baking="星巴克黃金烘焙",
+        name="閑庭綜合",
+        flavor1="烤麥芽",
+        flavor2="牛奶巧克力",
+        baking="黃金烘焙",
         origin=["拉丁美洲"],
         acidity="中",
         alcoholity="低",
         img_url="https://i.imgur.com/IabYIRs.png",
     ),
     Bean(
-        name="家常綜合咖啡豆",
+        name="家常綜合",
+        flavor1="太妃糖",
+        flavor2="可可粉",
         baking="中度烘焙",
         origin=["拉丁美洲"],
         acidity="中",
@@ -88,7 +127,9 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/qgWmOjv.png",
     ),
     Bean(
-        name="濃縮烘培咖啡豆",
+        name="濃縮咖啡",
+        flavor1="糖蜜",
+        flavor2="焦糖",
         baking="深度烘焙",
         origin=["拉丁美洲", "非洲", "亞洲太平洋"],
         acidity="中",
@@ -96,7 +137,9 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/8q6Y6hQ.png",
     ),
     Bean(
-        name="單一產區蘇門答臘",
+        name="蘇門答臘",
+        flavor1="濃郁草本香料",
+        flavor2="質樸辛香料",
         baking="深度烘焙",
         origin=["亞洲太平洋: 蘇門答臘·印尼"],
         acidity="低",
@@ -104,15 +147,19 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/ojGyF8z.png",
     ),
     Bean(
-        name="單一產區瓜地馬拉安提瓜",
+        name="瓜地馬拉",
+        flavor1="可可",
+        flavor2="烘培香料",
         baking="中度烘焙",
-        origin=["拉丁美洲: 瓜地馬拉安提瓜地區"],
+        origin=["拉丁美洲: 瓜地馬拉地區"],
         acidity="中",
         alcoholity="中",
         img_url="https://i.imgur.com/P5YGIi7.png",
     ),
     Bean(
-        name="單一產區肯亞",
+        name="肯亞",
+        flavor1="黑醋栗",
+        flavor2="葡萄柚",
         baking="中度烘焙",
         origin=["非洲: 肯亞"],
         acidity="高",
@@ -120,7 +167,9 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/meYNanR.png",
     ),
     Bean(
-        name="單一產區哥倫比亞",
+        name="哥倫比亞",
+        flavor1="烤核桃",
+        flavor2="草本香料",
         baking="中度烘焙",
         origin=["拉丁美洲: 哥倫比亞"],
         acidity="中",
@@ -136,7 +185,7 @@ for bean in BEAN_LIST:
 
 
 card_text_pair_dict = {
-    bean.info_html: bean.recipes_html
+    bean.card1_innerhtml: bean.card2_innerhtml
     for bean in BEAN_LIST
 }
 
@@ -155,7 +204,7 @@ class CardStatus(IntEnum):
 class CardDiv(DIV):
 
     # 基本樣式: 36x36、圓角、文字置中
-    base_class_str = "w-36 h-36 rounded-lg flex items-center justify-center text-center "
+    base_class_str = "w-36 h-36 rounded-lg items-center justify-center text-center "
     status_to_class_str_dict = {
         # 未翻面樣式: 藍色背景, 滑鼠指標
         CardStatus.UNFLIPPED: base_class_str+"bg-blue-500 cursor-pointer",
@@ -192,6 +241,7 @@ class CardDiv(DIV):
     def to_paired(self) -> None:
         self.status = CardStatus.PAIRED
         self.classList = self.status_to_class_str_dict[self.status]
+        self.innerHTML = self._text
 
 
 class Table:
@@ -214,6 +264,10 @@ class Table:
             for card_text in card_text_list
         ]
         self.div.bind("click", self._on_click)
+
+        # 🐛debug: 將所有卡牌配對
+        for card_div in self.div.children:
+            card_div.to_paired()
 
     def _on_click(self, evt) -> None:
         aio.run(self.on_click())
