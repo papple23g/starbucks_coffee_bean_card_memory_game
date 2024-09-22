@@ -58,18 +58,70 @@ BEAN_LIST = [
         acidity="低",
         alcoholity="高",
     ),
+    Bean(
+        name="閑庭綜合咖啡豆",
+        baking="星巴克黃金烘焙",
+        origin=["拉丁美洲"],
+        acidity="中",
+        alcoholity="低",
+    ),
+    Bean(
+        name="家常綜合咖啡豆",
+        baking="中度烘焙",
+        origin=["拉丁美洲"],
+        acidity="中",
+        alcoholity="中",
+    ),
+    Bean(
+        name="濃縮烘培咖啡豆",
+        baking="深度烘焙",
+        origin=["拉丁美洲", "非洲", "亞洲太平洋"],
+        acidity="中",
+        alcoholity="高",
+    ),
+    Bean(
+        name="單一產區蘇門答臘",
+        baking="深度烘焙",
+        origin=["亞洲太平洋: 蘇門答臘·印尼"],
+        acidity="低",
+        alcoholity="高",
+    ),
+    Bean(
+        name="單一產區瓜地馬拉安提瓜",
+        baking="中度烘焙",
+        origin=["拉丁美洲: 瓜地馬拉安提瓜地區"],
+        acidity="中",
+        alcoholity="中",
+    ),
+    Bean(
+        name="單一產區肯亞",
+        baking="中度烘焙",
+        origin=["非洲: 肯亞"],
+        acidity="高",
+        alcoholity="中",
+    ),
+    Bean(
+        name="單一產區哥倫比亞",
+        baking="中度烘焙",
+        origin=["拉丁美洲: 哥倫比亞"],
+        acidity="中",
+        alcoholity="中",
+    ),
+
 ]
 
-bean = BEAN_LIST[0]
+# bean = BEAN_LIST[0]
 card_text_pair_dict = {
-    "A": "a",
-    bean.name_and_origin_str: bean.recipes_str,
-    "C": "c",
-    "D": "d",
-    "E": "e",
-    "F": "f",
-    "G": "g",
-    "H": "h",
+    # "A": "a",
+    # bean.name_and_origin_str: bean.recipes_str,
+    # "C": "c",
+    # "D": "d",
+    # "E": "e",
+    # "F": "f",
+    # "G": "g",
+    # "H": "h",
+    bean.name_and_origin_str: bean.recipes_str
+    for bean in BEAN_LIST
 }
 
 
