@@ -141,7 +141,7 @@ BEAN_LIST = [
         flavor1="濃郁草本香料",
         flavor2="質樸辛香料",
         baking="深度烘焙",
-        origin=["亞洲太平洋: 蘇門答臘·印尼"],
+        origin=["亞洲太平洋 - 單一產區蘇門答臘·印尼"],
         acidity="低",
         alcoholity="高",
         img_url="https://i.imgur.com/ojGyF8z.png",
@@ -151,7 +151,7 @@ BEAN_LIST = [
         flavor1="可可",
         flavor2="烘培香料",
         baking="中度烘焙",
-        origin=["拉丁美洲: 瓜地馬拉地區"],
+        origin=["拉丁美洲 - 單一產區瓜地馬拉"],
         acidity="中",
         alcoholity="中",
         img_url="https://i.imgur.com/P5YGIi7.png",
@@ -265,9 +265,9 @@ class Table:
         ]
         self.div.bind("click", self._on_click)
 
-        # 🐛debug: 將所有卡牌配對
-        for card_div in self.div.children:
-            card_div.to_paired()
+        # # 🐛debug: 翻開所有卡牌並配對 (檢視卡片排版用)
+        # for card_div in self.div.children:
+        #     card_div.to_paired()
 
     def _on_click(self, evt) -> None:
         aio.run(self.on_click())
