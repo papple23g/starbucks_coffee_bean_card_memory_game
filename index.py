@@ -43,11 +43,11 @@ class Bean:
                 # 風味1
                 f'<span style="font-size: 24px;"><u>{self.flavor1}</u></span>',
                 # 名稱
-                f'<span class="text-md">({self.name})</span>',
+                f'<span style="font-size: 24px;line-height: 25px;"><b>({self.name})</b></span>',
                 # 產區
-                f'<span class="text-sm">{" / ".join(self.origin)}</span>',
+                f'<span style="font-size: 13px;">{"/".join(self.origin)}</span>',
                 # 酸度
-                f'<span class="text-sm">酸度: {self.acidity}</span>',
+                f'<span style="font-size: 13px;">酸度: {self.acidity}</span>',
             ])
             + self.img_html
             + '</div>'
@@ -63,11 +63,11 @@ class Bean:
                 # 風味2
                 f'<span style="font-size: 24px;"><u>{self.flavor2}</u></span>',
                 # 名稱
-                f'<span class="text-md">({self.name})</span>',
+                f'<span style="font-size: 24px;line-height: 25px;"><b>({self.name})</b></span>',
                 # 烘培程度
-                f'<span class="text-sm">{self.baking}</span>',
+                f'<span style="font-size: 13px;">{self.baking}</span>',
                 # 醇度
-                f'<span class="text-sm">醇度: {self.alcoholity}</span>',
+                f'<span style="font-size: 13px;">醇度: {self.alcoholity}</span>',
             ])
             # 圖片 (左下角，佔據卡片約1/6)
             + self.img_html
@@ -119,7 +119,7 @@ BEAN_LIST = [
     Bean(
         name="家常綜合",
         flavor1="太妃糖",
-        flavor2="可可粉",
+        flavor2="可可",
         baking="中度烘焙",
         origin=["拉丁美洲"],
         acidity="中",
@@ -127,11 +127,11 @@ BEAN_LIST = [
         img_url="https://i.imgur.com/qgWmOjv.png",
     ),
     Bean(
-        name="濃縮咖啡",
+        name="焦糖烘烤甜味咖啡",
         flavor1="糖蜜",
         flavor2="焦糖",
         baking="深度烘焙",
-        origin=["拉丁美洲", "非洲", "亞洲太平洋"],
+        origin=["拉丁美洲", "非洲<br>", "亞洲太平洋"],
         acidity="中",
         alcoholity="高",
         img_url="https://i.imgur.com/8q6Y6hQ.png",
@@ -141,7 +141,7 @@ BEAN_LIST = [
         flavor1="濃郁草本香料",
         flavor2="質樸辛香料",
         baking="深度烘焙",
-        origin=["亞洲太平洋 - 單一產區蘇門答臘·印尼"],
+        origin=["亞洲太平洋-單一產區·印尼"],
         acidity="低",
         alcoholity="高",
         img_url="https://i.imgur.com/ojGyF8z.png",
@@ -151,7 +151,7 @@ BEAN_LIST = [
         flavor1="可可",
         flavor2="烘培香料",
         baking="中度烘焙",
-        origin=["拉丁美洲 - 單一產區瓜地馬拉"],
+        origin=["拉丁美洲-單一產區瓜地馬拉"],
         acidity="中",
         alcoholity="中",
         img_url="https://i.imgur.com/P5YGIi7.png",
