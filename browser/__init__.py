@@ -44,6 +44,11 @@ class ClassList():
         pass
 
 
+class Query():
+    def getvalue(self) -> Any:
+        pass
+
+
 class _mockbrython(dict):
     def __init__(self, *args, **kwargs):
         self.style = self  # _mockbrython1()
@@ -121,6 +126,14 @@ class _mockbrython(dict):
 
     @property
     def children(self) -> list['_mockbrython']:
+        pass
+
+    @property
+    def query(self) -> Query:
+        pass
+
+    @property
+    def createElement(self) -> '_mockbrython':
         pass
 
 

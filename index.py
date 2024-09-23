@@ -1,17 +1,29 @@
 import random
 from dataclasses import dataclass
 from enum import IntEnum
-from typing import cast
 
 from browser import aio, doc
-from browser.html import DIV
+from browser.html import DIV, IMG, A
 
 random.seed(0)
 
 
+class GameMode(IntEnum):
+    EASY = 0
+    """ 簡單模式 """
+    HARD = 1
+    """ 困難模式 """
+
+
+GAME_MODE = (
+    GameMode.HARD if doc.query.getvalue('hard') == "1" else
+    GameMode.EASY
+)
+
+
 @dataclass
 class Bean:
-    """ 豆子 """
+    """ 咖啡豆 """
     name: str
     """名稱"""
     baking: str
@@ -75,7 +87,7 @@ class Bean:
         )
 
 
-BEAN_LIST = [
+EASY_BEAN_LIST = [
     Bean(
         name="輕柳綜合",
         flavor1="焦糖",
@@ -178,9 +190,69 @@ BEAN_LIST = [
     ),
 ]
 
+
+HARD_BEAN_LIST = [
+    EASY_BEAN_LIST[0],  # 從簡單模式追加一個咖啡豆，用來幫卡牌湊數
+    Bean(
+        name="尚比亞",
+        flavor1="柚子",
+        flavor2="甜薑",
+        baking="黃金烘焙",
+        origin=["非洲"],
+        acidity="中到高",
+        alcoholity="中",
+        img_url="https://i.imgur.com/eiIvdEr.png",
+    ),
+    Bean(
+        name="週年紀念綜合",
+        flavor1="雪松",
+        flavor2="黑松露",
+        baking="深度烘焙",
+        origin=["亞洲", "太平洋"],
+        acidity="低",
+        alcoholity="高",
+        img_url="https://i.imgur.com/zERRtQR.png",
+    ),
+    Bean(
+        name="秋季綜合",
+        flavor1="雪松",
+        flavor2="黑松露",
+        baking="深度烘焙",
+        origin=["拉丁美洲", "非洲<br>", "亞洲", "太平洋"],
+        acidity="中",
+        alcoholity="高",
+        img_url="https://i.imgur.com/NwBk2Xi.png",
+    ),
+    Bean(
+        name="淺日綜合",
+        flavor1="甜石榴",
+        flavor2="香草卡士達",
+        baking="淺烘焙",
+        origin=["印尼蘇門答臘<br>", "哥倫比亞拿里諾"],
+        acidity="中偏高",
+        alcoholity="中",
+        img_url="https://i.imgur.com/LdwuHOT.png",
+    ),
+    Bean(
+        name="深月綜合",
+        flavor1="黑胡桃",
+        flavor2="松露巧克力",
+        baking="深烘焙",
+        origin=["印尼蘇門答臘<br>", "哥倫比亞拿里諾"],
+        acidity="中偏低",
+        alcoholity="中偏高",
+        img_url="https://i.imgur.com/YspU8Gw.png",
+    ),
+]
+
+BEAN_LIST = (
+    EASY_BEAN_LIST if GAME_MODE == GameMode.EASY else
+    HARD_BEAN_LIST
+)
+
 # 預先加載圖片，避免卡牌翻面時圖片閃爍
 for bean in BEAN_LIST:
-    img = doc.createElement("img")
+    img: IMG = doc.createElement("img")
     img.src = bean.img_url
 
 
@@ -205,11 +277,18 @@ class CardDiv(DIV):
 
     # 基本樣式: 36x36、圓角、文字置中
     base_class_str = "w-36 h-36 rounded-lg items-center justify-center text-center "
+    base_color = (
+        # 簡單模式: 藍色
+        "blue-500" if GAME_MODE == GameMode.EASY else
+        # 困難模式: 紫色
+        "purple-500"
+    )
+
     status_to_class_str_dict = {
         # 未翻面樣式: 藍色背景, 滑鼠指標
-        CardStatus.UNFLIPPED: base_class_str+"bg-blue-500 cursor-pointer",
+        CardStatus.UNFLIPPED: base_class_str+f"bg-{base_color} cursor-pointer",
         # 翻面樣式: 藍色框線
-        CardStatus.FLIPPED: base_class_str+"border-4 border-blue-500",
+        CardStatus.FLIPPED: base_class_str+f"border-4 border-{base_color}",
         # 配對樣式: 綠色背景、白色字體
         CardStatus.PAIRED: base_class_str+"bg-green-500 text-white",
     }
@@ -266,8 +345,12 @@ class Table:
         self.div.bind("click", self._on_click)
 
         # # 🐛debug: 翻開所有卡牌並配對 (檢視卡片排版用)
-        # for card_div in self.div.children:
+        # for card_div in self.card_div_list:
         #     card_div.to_paired()
+
+    @property
+    def card_div_list(self) -> list[CardDiv]:
+        return self.div.children
 
     def _on_click(self, evt) -> None:
         aio.run(self.on_click())
@@ -275,7 +358,7 @@ class Table:
     async def on_click(self) -> None:
         flipped_card_div_list: list[CardDiv] = [
             card_div
-            for card_div in cast(list[CardDiv], self.div.children)
+            for card_div in self.card_div_list
             if card_div.status == CardStatus.FLIPPED
         ]
         if len(flipped_card_div_list) != 2:
@@ -293,7 +376,7 @@ class Table:
         # 若配對失敗，則經冷卻時間後將卡牌設翻回
         else:
             self.div.unbind("click", self._on_click)
-            card_div_list: list[CardDiv] = self.div.children
+            card_div_list: list[CardDiv] = self.card_div_list
             for card_div in card_div_list:
                 card_div.unbind("click", card_div.on_click)
             await aio.sleep(self.cool_down_sec)
@@ -305,4 +388,8 @@ class Table:
 
 
 table = Table()
-doc <= table.div
+doc["table"] <= table.div
+doc <= DIV(
+    A(">>前往困難版", href="?hard=1", Class="text-blue-500 underline") if GAME_MODE == GameMode.EASY else
+    A(">>前往簡單版", href="?hard=0", Class="text-blue-500 underline")
+)

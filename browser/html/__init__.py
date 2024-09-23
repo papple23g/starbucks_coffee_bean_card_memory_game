@@ -47,7 +47,7 @@ HR = _mockbrython
 HTML = _mockbrython
 I = _mockbrython
 IFRAME = _mockbrython
-IMG = _mockbrython
+# IMG = _mockbrython
 # INPUT = _mockbrython
 INS = _mockbrython
 ISINDEX = _mockbrython
@@ -179,4 +179,10 @@ class AUDIO(_mockbrython):
         pass
 
     def play(self) -> None:
+        pass
+
+
+class IMG(_mockbrython):
+    @property
+    def src(self) -> str:
         pass
