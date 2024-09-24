@@ -53,7 +53,7 @@ class Bean:
             '<div style="position: relative;">'
             + "<br>".join([
                 # 風味1
-                f'<span style="font-size: 24px;"><u>{self.flavor1}</u></span>',
+                f'<span style="font-size: 24px;"><b><u>{self.flavor1}</u></b></span>',
                 # 名稱
                 f'<span style="font-size: 24px;line-height: 25px;"><b>({self.name})</b></span>',
                 # 產區
@@ -73,7 +73,7 @@ class Bean:
             '<div style="position: relative;">'
             + "<br>".join([
                 # 風味2
-                f'<span style="font-size: 24px;"><u>{self.flavor2}</u></span>',
+                f'<span style="font-size: 24px;"><b><u>{self.flavor2}</u></b></span>',
                 # 名稱
                 f'<span style="font-size: 24px;line-height: 25px;"><b>({self.name})</b></span>',
                 # 烘培程度
@@ -139,9 +139,9 @@ EASY_BEAN_LIST = [
         img_url="https://i.imgur.com/qgWmOjv.png",
     ),
     Bean(
-        name="焦糖烘烤甜味咖啡",
+        name="濃縮咖啡",
         flavor1="糖蜜",
-        flavor2="焦糖",
+        flavor2="焦糖烘烤甜味",
         baking="深度烘焙",
         origin=["拉丁美洲", "非洲<br>", "亞洲太平洋"],
         acidity="中",
@@ -344,9 +344,9 @@ class Table:
         ]
         self.div.bind("click", self._on_click)
 
-        # # 🐛debug: 翻開所有卡牌並配對 (檢視卡片排版用)
-        # for card_div in self.card_div_list:
-        #     card_div.to_paired()
+        # 🐛debug: 翻開所有卡牌並配對 (檢視卡片排版用)
+        for card_div in self.card_div_list:
+            card_div.to_paired()
 
     @property
     def card_div_list(self) -> list[CardDiv]:
