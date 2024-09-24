@@ -344,9 +344,9 @@ class Table:
         ]
         self.div.bind("click", self._on_click)
 
-        # 🐛debug: 翻開所有卡牌並配對 (檢視卡片排版用)
-        for card_div in self.card_div_list:
-            card_div.to_paired()
+        # # 🐛debug: 翻開所有卡牌並配對 (檢視卡片排版用)
+        # for card_div in self.card_div_list:
+        #     card_div.to_paired()
 
     @property
     def card_div_list(self) -> list[CardDiv]:
